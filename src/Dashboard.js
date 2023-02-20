@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Stack, Button } from "@mui/material";
 import PMTree from "./PMTree";
 import EditDialog from "./EditDialog";
+import CreateDialog from "./CreateDialog";
 
 const getData = {
   name: "ECOMMERCE PROJECT",
@@ -97,6 +98,7 @@ export default function Dashboard() {
   const [data, setData] = useState(getData);
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
 
   const handleClickOpen = () => {
     if (selected) setOpenDialog(true);
@@ -112,6 +114,13 @@ export default function Dashboard() {
         setData={setData}
         selected={selected}
       />
+      <CreateDialog
+        open={openCreateDialog}
+        setOpen={setOpenCreateDialog}
+        data={data}
+        setData={setData}
+        selected={selected}
+      />
       {/* <Stack direction="row">
         <div style={{ marginRight: "20%" }}>
           <h2>Selected: {selected.name}</h2>
@@ -121,8 +130,10 @@ export default function Dashboard() {
         </div> */}
       <PMTree
         data={data}
+        selected={selected}
         setSelected={setSelected}
         setOpenDialog={setOpenDialog}
+        setOpenCreateDialog={setOpenCreateDialog}
       />
       {/* </Stack> */}
       {/* // </Container> */}

@@ -7,8 +7,21 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 
-export default function EditDialog({ open, setOpen, data, setData, selected }) {
+export default function CreateDialog({
+  open,
+  setOpen,
+  data,
+  setData,
+  selected,
+}) {
   const handleClose = () => {
     setOpen(false);
   };
@@ -19,14 +32,13 @@ export default function EditDialog({ open, setOpen, data, setData, selected }) {
   useEffect(() => {
     if (!selected) return;
     setName(selected?.name);
-    setPrompt(selected?.attributes?.prompt);
-    console.log(name);
-  }, [selected, data, name]);
+    setPrompt(selected?.attributes?.department);
+  }, [selected]);
 
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Prompt at Node</DialogTitle>
+        <DialogTitle>Create a New Node</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>Set Name</DialogContentText> */}
           <TextField
@@ -53,9 +65,22 @@ export default function EditDialog({ open, setOpen, data, setData, selected }) {
             value={prompt}
           />
         </DialogContent>
+        <DialogContent>
+          <FormControl>
+            <FormLabel>Type</FormLabel>
+            <RadioGroup defaultValue="epic">
+              <FormControlLabel value="epic" control={<Radio />} label="Epic" />
+              <FormControlLabel
+                value="story"
+                control={<Radio />}
+                label="Story"
+              />
+            </RadioGroup>
+          </FormControl>
+        </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Apply</Button>
+          <Button onClick={handleClose}>Create</Button>
         </DialogActions>
       </Dialog>
     </div>

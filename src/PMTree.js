@@ -25,16 +25,30 @@ const customNode = ({
       onClick={() =>
         nodeClicked(nodeDatum, toggleNode, setSelected, setOptions)
       }
-      onMouseOver={(e) => mouseOver(e, setAnchor, setOptions)}
+      onMouseOver={(e) =>
+        mouseOver(nodeDatum, e, setAnchor, setOptions, setSelected)
+      }
     />
 
     <text fill="black" strokeWidth="0" x="20">
       {nodeDatum.name}
     </text>
     {nodeDatum.attributes?.prompt && (
-      <text fill="white" x="19" dy="20" strokeWidth="1">
-        {wrappedText(nodeDatum.attributes?.prompt)}
-      </text>
+      // <text
+      //   fill="white"
+      //   x="20"
+      //   y="20"
+      //   dy="20"
+      //   wordSpacing="0.1em"
+      //   strokeWidth="1"
+      //   textLength="400"
+      //   lengthAdjust="spacingAndGlyphs"
+      // >
+      //   {nodeDatum.attributes?.prompt}
+      // </text>
+      <foreignObject x="20" y="20" width="800" height="1000">
+        <textbox>{nodeDatum.attributes?.prompt}</textbox>
+      </foreignObject>
     )}
   </g>
 );
@@ -48,11 +62,11 @@ const wrappedText = (text) => {
 
 const nodeClicked = (nodeDatum, toggleNode, setSelected) => {
   toggleNode();
-  setSelected(nodeDatum.data);
-  console.log(nodeDatum.name);
+  setSelected(nodeDatum);
 };
 
-const mouseOver = (e, setAnchor, setOptions) => {
+const mouseOver = (nodeDatum, e, setAnchor, setOptions, setSelected) => {
+  setSelected(nodeDatum);
   setAnchor(e.target);
   setOptions(true);
 };
@@ -68,7 +82,13 @@ const mouseOver = (e, setAnchor, setOptions) => {
 //   setOpen(false);
 // };
 
-export default function PMTree({ data, setSelected, setOpenDialog }) {
+export default function PMTree({
+  data,
+  selected,
+  setSelected,
+  setOpenDialog,
+  setOpenCreateDialog,
+}) {
   const [options, setOptions] = useState(false);
   const [anchor, setAnchor] = useState(null);
 
@@ -100,7 +120,7 @@ export default function PMTree({ data, setSelected, setOpenDialog }) {
           customNode({ ...d3Props, setSelected, setAnchor, setOptions })
         }
         nodeSize={{ x: 200, y: 200 }}
-        separation={{ nonSiblings: 4, siblings: 5 }}
+        separation={{ nonSiblings: 5, siblings: 5 }}
       ></Tree>
       <Popper open={options} anchorEl={anchor}>
         <Box
@@ -114,7 +134,12 @@ export default function PMTree({ data, setSelected, setOpenDialog }) {
             <ExpandCircleDownIcon fontSize="small" />
           </IconButton>
           <IconButton>
-            <AddBoxIcon fontSize="small" />
+            <AddBoxIcon
+              onClick={() => {
+                setOpenCreateDialog(true);
+              }}
+              fontSize="small"
+            />
           </IconButton>
           <IconButton>
             <DeleteIcon fontSize="small" />
