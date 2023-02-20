@@ -29,12 +29,6 @@ export default function CreateDialog({
   const [name, setName] = useState("");
   const [prompt, setPrompt] = useState("");
 
-  useEffect(() => {
-    if (!selected) return;
-    setName(selected?.name);
-    setPrompt(selected?.attributes?.department);
-  }, [selected]);
-
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
